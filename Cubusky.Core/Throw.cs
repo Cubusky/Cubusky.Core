@@ -17,7 +17,7 @@ namespace Cubusky
 #else
             if (value.CompareTo(other) > 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was greater than {other}.");
             }
 #endif
         }
@@ -31,7 +31,7 @@ namespace Cubusky
 #else
             if (value.CompareTo(other) >= 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was greater than or equal to {other}.");
             }
 #endif
         }
@@ -45,7 +45,7 @@ namespace Cubusky
 #else
             if (value.Equals(other))
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was equal to {other}.");
             }
 #endif
         }
@@ -59,7 +59,7 @@ namespace Cubusky
 #else
             if (!value.Equals(other))
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was not equal to {other}.");
             }
 #endif
         }
@@ -73,7 +73,7 @@ namespace Cubusky
 #else
             if (value.CompareTo(other) <= 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was less than or equal to {other}.");
             }
 #endif
         }
@@ -87,7 +87,7 @@ namespace Cubusky
 #else
             if (value.CompareTo(other) < 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, $"The value was less than {other}.");
             }
 #endif
         }
@@ -104,7 +104,7 @@ namespace Cubusky
         {
             if (value.Equals(default))
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, "The value was zero.");
             }
         }
 #endif
@@ -121,7 +121,7 @@ namespace Cubusky
         {
             if (value.CompareTo(default) < 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, "The value was negative.");
             }
         }
 #endif
@@ -138,7 +138,7 @@ namespace Cubusky
         {
             if (value.CompareTo(default) <= 0)
             {
-                throw new ArgumentOutOfRangeException(paramName);
+                throw new ArgumentOutOfRangeException(paramName, "The value was negative or zero.");
             }
         }
 #endif
