@@ -58,7 +58,7 @@ namespace Cubusky.Numerics
         /// <param name="roll">The roll angle, in radians, around the Z axis.</param>
         /// <param name="radians">The amount of rotation, in radians.</param>
         /// <param name="scale">The scale to use.</param>
-        /// <param name="scales">The scale to use.</param>
+        /// <param name="scales">The scales to use.</param>
         /// <returns>The transformation matrix.</returns>
         internal static Matrix4x4 doc_CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 axis, float angle, float yaw, float pitch, float roll, float radians, float scale, Vector3 scales) => default;
 
