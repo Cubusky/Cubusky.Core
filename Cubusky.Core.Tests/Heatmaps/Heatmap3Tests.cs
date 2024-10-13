@@ -55,15 +55,15 @@ namespace Cubusky.Heatmaps.Tests
             { Point3.UnitZ, 11 },
         };
 
-        //public static Heatmap3 Copy(Heatmap3 heatmap)
-        //{
-        //    var copy = new Heatmap3(heatmap.CellToPosition);
-        //    foreach (var cell in heatmap)
-        //    {
-        //        copy.Add(cell, heatmap[cell]);
-        //    }
-        //    return copy;
-        //}
+        public static Heatmap3 Copy(Heatmap3 heatmap)
+        {
+            var copy = new Heatmap3(heatmap.CellToPositionMatrix);
+            foreach (var cell in heatmap)
+            {
+                copy.Add(cell, heatmap[cell]);
+            }
+            return copy;
+        }
 
         public static readonly TheoryData<Point3, int, int> CellStrength = new TheoryData<Point3, int, int>()
         {
@@ -85,11 +85,8 @@ namespace Cubusky.Heatmaps.Tests
         [MemberData(nameof(CellStrength))]
         public void Add(Point3 cell, int strength, int add)
         {
-            var heatmapPopulatedCopy = new Heatmap3(heatmapPopulated.CellToPosition)
-            {
-                heatmapPopulated,
-                { cell, add },
-            };
+            var heatmapPopulatedCopy = Copy(heatmapPopulated);
+            heatmapPopulatedCopy.Add(cell, add);
             var result = heatmapPopulatedCopy[cell];
             Assert.Equal(strength + add, result);
         }
@@ -104,10 +101,7 @@ namespace Cubusky.Heatmaps.Tests
         [MemberData(nameof(CellStrength))]
         public void Remove(Point3 cell, int strength, int remove)
         {
-            var heatmapPopulatedCopy = new Heatmap3(heatmapPopulated.CellToPosition)
-            {
-                heatmapPopulated,
-            };
+            var heatmapPopulatedCopy = Copy(heatmapPopulated);
             heatmapPopulatedCopy.Remove(cell, remove);
             var result = heatmapPopulatedCopy[cell];
             Assert.Equal(Math.Max(strength - remove, 0), result);
@@ -123,8 +117,6 @@ namespace Cubusky.Heatmaps.Tests
         #region Compact Array / Multidimensional Array
         public static readonly Heatmap3 heatmapCube = new Heatmap3()
         {
-            { new Point3(0, 0, 0), 1 },
-
             { new Point3(1, 0, 0), 2 },
             { new Point3(0, 1, 0), 3 },
             { new Point3(0, 0, 1), 4 },
@@ -156,10 +148,8 @@ namespace Cubusky.Heatmaps.Tests
             { new Point3(-1, 1, 1), 27 },
         };
 
-        public static readonly int[] compactCubeArray = new int[108]
+        public static readonly int[] compactCubeArray = new int[104]
         {
-            0, 0, 0, 1,
-
             1, 0, 0, 2,
             0, 1, 0, 3,
             0, 0, 1, 4,
@@ -200,7 +190,7 @@ namespace Cubusky.Heatmaps.Tests
             },
             {
                 { 14, 10, 21 },
-                { 11, 1, 4 },
+                { 11, 0, 4 },
                 { 20, 3, 7 },
             },
             {
@@ -220,7 +210,7 @@ namespace Cubusky.Heatmaps.Tests
         [Fact]
         public void AddCompactArray()
         {
-            var result = new Heatmap3(heatmapCube.CellToPosition)
+            var result = new Heatmap3(heatmapCube.CellToPositionMatrix)
             {
                 compactCubeArray
             };
@@ -243,7 +233,7 @@ namespace Cubusky.Heatmaps.Tests
         [Fact]
         public void AddMultidimensionalArray()
         {
-            var result = new Heatmap3(heatmapCube.CellToPosition)
+            var result = new Heatmap3(heatmapCube.CellToPositionMatrix)
             {
                 { multidimensionalCubeArray, -Point3.One }
             };
@@ -258,7 +248,7 @@ namespace Cubusky.Heatmaps.Tests
         [Fact]
         public void AddCompactAndMultidimensionalArray()
         {
-            var result = new Heatmap3(heatmapCube.CellToPosition)
+            var result = new Heatmap3(heatmapCube.CellToPositionMatrix)
             {
                 compactCubeArray,
                 { multidimensionalCubeArray, -Point3.One }
