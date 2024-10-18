@@ -39,14 +39,14 @@ namespace Cubusky.Heatmaps
         /// <param name="rotation">The heatmap's rotation.</param>
         /// <param name="scale">The heatmap's scale.</param>
         /// <exception cref="ArgumentException">Thrown when the resulting matrix cannot be inverted.</exception>
-        public Heatmap3(Vector3 position, Quaternion rotation, float scale) : this(Matrix4x4Extensions.CreateTransformation(position, rotation, scale)) { }
+        public Heatmap3(Vector3 position, Quaternion rotation, float scale) : this(Matrix.CreateTransformation4x4(position, rotation, scale)) { }
 
         /// <summary>Initializes a new instance of the <see cref="Heatmap3"/> class with the specified position, rotation, and scales.</summary>
         /// <param name="position">The heatmap's position.</param>
         /// <param name="rotation">The heatmap's rotation.</param>
         /// <param name="scales">The heatmap's scales.</param>
         /// <exception cref="ArgumentException">Thrown when the resulting matrix cannot be inverted.</exception>
-        public Heatmap3(Vector3 position, Quaternion rotation, Vector3 scales) : this(Matrix4x4Extensions.CreateTransformation(position, rotation, scales)) { }
+        public Heatmap3(Vector3 position, Quaternion rotation, Vector3 scales) : this(Matrix.CreateTransformation4x4(position, rotation, scales)) { }
 
         /// <inheritdoc />
         public Point3 GetCell(Vector3 position)

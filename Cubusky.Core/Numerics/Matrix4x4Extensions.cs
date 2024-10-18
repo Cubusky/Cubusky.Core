@@ -3,43 +3,43 @@ using System.Runtime.CompilerServices;
 
 namespace Cubusky.Numerics
 {
-    /// <summary>Provides extension methods for the <see cref="Matrix4x4"/> struct.</summary>
-    public static class Matrix4x4Extensions
+    /// <summary>Provides utility methods for the <see cref="Matrix4x4"/> and <see cref="Matrix3x2"/> structs.</summary>
+    public static partial class Matrix
     {
         /// <summary>Creates a transformation matrix from the specified vector position, rotation from a unit vector and an angle to rotate around the vector, and single-precision scalar.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, Vector3 axis, float angle, float scale)
-            => CreateTransformation(position, Quaternion.CreateFromAxisAngle(axis, angle), Vector3.One * scale);
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, Vector3 axis, float angle, float scale)
+            => CreateTransformation4x4(position, Quaternion.CreateFromAxisAngle(axis, angle), Vector3.One * scale);
 
         /// <summary>Creates a transformation matrix from the specified vector position, rotation from a unit vector and an angle to rotate around the vector, and vector scale.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, Vector3 axis, float angle, Vector3 scales)
-            => CreateTransformation(position, Quaternion.CreateFromAxisAngle(axis, angle), scales);
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, Vector3 axis, float angle, Vector3 scales)
+            => CreateTransformation4x4(position, Quaternion.CreateFromAxisAngle(axis, angle), scales);
 
         /// <summary>Creates a transformation matrix from the specified vector position, rotation from the given yaw, pitch, and roll, and single-precision scalar.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, float yaw, float pitch, float roll, float scale)
-            => CreateTransformation(position, Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll), Vector3.One * scale);
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, float yaw, float pitch, float roll, float scale)
+            => CreateTransformation4x4(position, Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll), Vector3.One * scale);
 
         /// <summary>Creates a transformation matrix from the specified vector position, rotation from the given yaw, pitch, and roll, and vector scale.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, float yaw, float pitch, float roll, Vector3 scales)
-            => CreateTransformation(position, Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll), scales);
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, float yaw, float pitch, float roll, Vector3 scales)
+            => CreateTransformation4x4(position, Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll), scales);
 
         /// <summary>Creates a transformation matrix from the specified vector position, Quaternion rotation, and single-precision scalar.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, Quaternion quaternion, float scale)
-            => CreateTransformation(position, quaternion, Vector3.One * scale);
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, float scale)
+            => CreateTransformation4x4(position, quaternion, Vector3.One * scale);
 
         /// <summary>Creates a transformation matrix from the specified vector position, Quaternion rotation, and vector scale.</summary>
         /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix4x4 CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 scales)
+        public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, Vector3 scales)
         {
             var translationMatrix = Matrix4x4.CreateTranslation(position);
             var rotationMatrix = Matrix4x4.CreateFromQuaternion(quaternion);
@@ -62,7 +62,7 @@ namespace Cubusky.Numerics
         /// <returns>The transformation matrix.</returns>
         internal static Matrix4x4 doc_CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 axis, float angle, float yaw, float pitch, float roll, float radians, float scale, Vector3 scales) => default;
 
-        //public static Matrix4x4 CreateTransformation(Vector3 position, Quaternion quaternion, float scale, Vector3 centerPoint)
-        //public static Matrix4x4 CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 scales, Vector3 centerPoint)
+        //public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, float scale, Vector3 centerPoint)
+        //public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, Vector3 scales, Vector3 centerPoint)
     }
 }

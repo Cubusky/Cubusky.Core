@@ -38,13 +38,13 @@ namespace Cubusky.Heatmaps
         /// <param name="position">The heatmap's position.</param>
         /// <param name="radians">The heatmap's rotation.</param>
         /// <param name="scale">The heatmap's scale.</param>
-        public Heatmap2(Vector2 position, float radians, float scale) : this(Matrix3x2Extensions.CreateTransformation(position, radians, scale)) { }
+        public Heatmap2(Vector2 position, float radians, float scale) : this(Matrix.CreateTransformation3x2(position, radians, scale)) { }
 
         /// <summary>Initializes a new instance of the <see cref="Heatmap2"/> class with the specified position, rotation, and scale.</summary>
         /// <param name="position">The heatmap's position.</param>
         /// <param name="radians">The heatmap's rotation.</param>
         /// <param name="scales">The heatmap's scales.</param>
-        public Heatmap2(Vector2 position, float radians, Vector2 scales) : this(Matrix3x2Extensions.CreateTransformation(position, radians, scales)) { }
+        public Heatmap2(Vector2 position, float radians, Vector2 scales) : this(Matrix.CreateTransformation3x2(position, radians, scales)) { }
 
         /// <inheritdoc />
         public Point2 GetCell(Vector2 position)
