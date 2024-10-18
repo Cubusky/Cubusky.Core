@@ -59,8 +59,9 @@ namespace Cubusky.Numerics
         /// <param name="radians">The amount of rotation, in radians.</param>
         /// <param name="scale">The scale to use.</param>
         /// <param name="scales">The scales to use.</param>
+        /// <param name="skew">The amount of skew, in radians.</param>
         /// <returns>The transformation matrix.</returns>
-        internal static Matrix4x4 doc_CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 axis, float angle, float yaw, float pitch, float roll, float radians, float scale, Vector3 scales) => default;
+        internal static Matrix4x4 doc_CreateTransformation(Vector3 position, Quaternion quaternion, Vector3 axis, float angle, float yaw, float pitch, float roll, float radians, float scale, Vector3 scales, Vector2 skew) => default;
 
         //public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, float scale, Vector3 centerPoint)
         //public static Matrix4x4 CreateTransformation4x4(Vector3 position, Quaternion quaternion, Vector3 scales, Vector3 centerPoint)
