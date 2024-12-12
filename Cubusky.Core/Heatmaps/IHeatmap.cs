@@ -1,5 +1,4 @@
-﻿using Cubusky.Numerics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Cubusky.Heatmaps
@@ -8,7 +7,6 @@ namespace Cubusky.Heatmaps
     /// <typeparam name="TPoint">The type of the points representing the cells in the heatmap.</typeparam>
     /// <typeparam name="TVector">The type of the vectors representing the positions in the heatmap.</typeparam>
     public interface IHeatmap<TPoint, TVector> : ICollection<TPoint>
-        where TPoint : IIndexable<int>
     {
         /// <summary>Gets the strength at the specified cell.</summary>
         /// <param name="cell">The point representing the cell in the heatmap.</param>

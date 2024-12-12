@@ -412,25 +412,6 @@ namespace Cubusky.Numerics.Tests
         }
 
         [Fact]
-        public void Point3_GetEnumerator_ReturnsCorrectEnumerator()
-        {
-            // Arrange
-            var point = new Point3(1, 2, 3);
-            int[] expectedValues = { 1, 2, 3 };
-            int index = 0;
-
-            // Act
-            var enumerator = point.GetEnumerator();
-
-            // Assert
-            while (enumerator.MoveNext())
-            {
-                Assert.Equal(expectedValues[index], enumerator.Current);
-                index++;
-            }
-        }
-
-        [Fact]
         public void Point3_CopyTo_Array_CopiesElementsToSpecifiedArray()
         {
             // Arrange
