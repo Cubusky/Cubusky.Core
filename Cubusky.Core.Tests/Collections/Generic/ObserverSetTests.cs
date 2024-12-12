@@ -177,7 +177,7 @@ namespace Cubusky.Collections.Generic.Tests
         {
             using var numberSet = new NumberSet();
             Assert.Equal(2, numberSet.Observables.Count);
-            Assert.Equal(0, numberSet.Observers.Count);
+            Assert.Equal(2, numberSet.Observers.Count);
 
             numberSet.Set.Remove(numberSet.PrimaryObservable);
             numberSet.Set.Add(numberSet.TertiaryObserver);
