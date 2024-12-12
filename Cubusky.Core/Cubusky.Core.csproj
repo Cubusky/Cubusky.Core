@@ -47,6 +47,31 @@
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.Core.Benchmarks</_Parameter1>
+	</AssemblyAttribute>
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.Core.Tests</_Parameter1>
+	</AssemblyAttribute>
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.Unity</_Parameter1>
+	</AssemblyAttribute>
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.UnityEditor</_Parameter1>
+	</AssemblyAttribute>
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.Unity.Heatmaps</_Parameter1>
+	</AssemblyAttribute>
+
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Cubusky.UnityEditor.Heatmaps</_Parameter1>
+	</AssemblyAttribute>
   </ItemGroup>
 
 </Project>
