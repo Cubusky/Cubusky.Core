@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>8.0</LangVersion>
+	
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<RootNamespace>Cubusky.SourceGenerators</RootNamespace>
+	  
+	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	<IsRoslynComponent>true</IsRoslynComponent>
+	<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	<IncludeBuildOutput>false</IncludeBuildOutput>
+
+	<!--<PreserveCompilationContext>true</PreserveCompilationContext>-->
+	<!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
+	<!--<GeneratePackageOnBuild>True</GeneratePackageOnBuild>-->
+	<!--<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <!-- The following libraries include the source generator interfaces and types we need -->
+  <ItemGroup>
+	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="*" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- This ensures the library will be packaged as a source generator when we use `dotnet pack` -->
+  <ItemGroup>
+	<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+	
+</Project>
