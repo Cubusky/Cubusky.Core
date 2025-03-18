@@ -24,6 +24,7 @@ jobs:
       with:
         dotnet-version: ${{matrix.dotnet-version}}
         cache: true
+        cache-dependency-path: './Cubusky.Core/packages.lock.json'
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
