@@ -1,9 +1,10 @@
-﻿using Cubusky.Numerics;
+using Cubusky.Heatmaps;
+using Cubusky.Numerics;
 using System;
 using System.Numerics;
 using Xunit;
 
-namespace Cubusky.Heatmaps.Tests
+namespace Cubusky.Tests.Heatmaps
 {
     public class Heatmap3to2Tests
     {
@@ -19,9 +20,9 @@ namespace Cubusky.Heatmaps.Tests
         public static readonly Heatmap3to2 heatmapScaledXY = new Heatmap3to2(Matrix4x4.CreateScale(scales), Swizzle3to2.XY);
         public static readonly Heatmap3to2 heatmapScaledXZ = new Heatmap3to2(Matrix4x4.CreateScale(scales), Swizzle3to2.XZ);
         public static readonly Heatmap3to2 heatmapScaledYZ = new Heatmap3to2(Matrix4x4.CreateScale(scales), Swizzle3to2.YZ);
-        public static readonly Heatmap3to2 heatmapTransformedXY = new Heatmap3to2(position, quaternion, scales, Swizzle3to2.XY);
-        public static readonly Heatmap3to2 heatmapTransformedXZ = new Heatmap3to2(position, quaternion, scales, Swizzle3to2.XZ);
-        public static readonly Heatmap3to2 heatmapTransformedYZ = new Heatmap3to2(position, quaternion, scales, Swizzle3to2.YZ);
+        public static readonly Heatmap3to2 heatmapTransformedXY = new Heatmap3to2(Matrix.CreateTransformation4x4(position, quaternion, scales), Swizzle3to2.XY);
+        public static readonly Heatmap3to2 heatmapTransformedXZ = new Heatmap3to2(Matrix.CreateTransformation4x4(position, quaternion, scales), Swizzle3to2.XZ);
+        public static readonly Heatmap3to2 heatmapTransformedYZ = new Heatmap3to2(Matrix.CreateTransformation4x4(position, quaternion, scales), Swizzle3to2.YZ);
 
         public static readonly TheoryData<Heatmap3to2, Vector3, Point2, Vector3> HeatmapPositionCell = new TheoryData<Heatmap3to2, Vector3, Point2, Vector3>()
         {
@@ -71,9 +72,9 @@ namespace Cubusky.Heatmaps.Tests
         public static Heatmap3to2 Copy(Heatmap3to2 heatmap)
         {
             var copy = new Heatmap3to2(heatmap.CellToPositionMatrix);
-            foreach (var cell in heatmap)
+            foreach (var (cell, strength) in heatmap)
             {
-                copy.Add(cell, heatmap[cell]);
+                copy.Add(cell, strength);
             }
             return copy;
         }

@@ -1,13 +1,16 @@
-﻿using Cubusky.Numerics;
+using Cubusky.Heatmaps.Json.Serialization;
+using Cubusky.Numerics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
+using System.Text.Json.Serialization;
 
 namespace Cubusky.Heatmaps
 {
     /// <summary>Represents a 2D heatmap implementation in 3D space.</summary>
+    [JsonConverter(typeof(Heatmap3to2JsonConverter))]
     public class Heatmap3to2 : IHeatmap<Point2, Vector3>
     {
         private readonly Dictionary<Point2, int> strengthByCell = new Dictionary<Point2, int>();
@@ -24,40 +27,105 @@ namespace Cubusky.Heatmaps
         /// <summary>Gets the swizzle to use when transforming between positions and cells.</summary>
         public readonly Swizzle3to2 swizzle;
 
-        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class.</summary>
-        /// <param name="swizzle">The swizzle to use when transforming between positions and cells.</param>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
         public Heatmap3to2(Swizzle3to2 swizzle = Swizzle3to2.XY)
         {
             this.swizzle = swizzle;
         }
 
         /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified transformation matrix.</summary>
-        /// <param name="matrix">The transformation matrix. This equals the <see cref="CellToPositionMatrix"/> property. Its inverse equals the <see cref="PositionToCellMatrix"/> property.</param>
-        /// <param name="swizzle">The swizzle to use when transforming between positions and cells.</param>
         /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
-        public Heatmap3to2(Matrix4x4 matrix, Swizzle3to2 swizzle = Swizzle3to2.XY) : this(swizzle)
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY) : this(swizzle)
         {
-            if (!Matrix4x4.Invert(CellToPositionMatrix = matrix, out PositionToCellMatrix))
+            if (!Matrix4x4.Invert(CellToPositionMatrix = cellToPositionMatrix, out PositionToCellMatrix))
             {
-                throw new ArgumentException("The matrix cannot be inverted.", nameof(matrix));
+                throw new ArgumentException("The matrix cannot be inverted.", nameof(cellToPositionMatrix));
             }
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified position, rotation, and scale.</summary>
-        /// <param name="position">The heatmap's position.</param>
-        /// <param name="rotation">The heatmap's rotation.</param>
-        /// <param name="scale">The heatmap's scale.</param>
-        /// <param name="swizzle">The swizzle to use when transforming between positions and cells.</param>
-        /// <exception cref="ArgumentException">Thrown when the resulting matrix cannot be inverted.</exception>
-        public Heatmap3to2(Vector3 position, Quaternion rotation, float scale, Swizzle3to2 swizzle = Swizzle3to2.XY) : this(Matrix.CreateTransformation4x4(position, rotation, scale), swizzle) { }
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified initial capacity.</summary>
+        /// <exception cref="ArgumentOutOfRangeException">capacity is less than 0.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(int capacity, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(capacity);
 
-        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified position, rotation, and scales.</summary>
-        /// <param name="position">The heatmap's position.</param>
-        /// <param name="rotation">The heatmap's rotation.</param>
-        /// <param name="scales">The heatmap's scales.</param>
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified initial capacity and transformation matrix.</summary>
+        /// <exception cref="ArgumentOutOfRangeException">capacity is less than 0.</exception>
+        /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(int capacity, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(cellToPositionMatrix, swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(capacity);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified <see cref="IEqualityComparer{T}"/>.</summary>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEqualityComparer<Point2>? comparer, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified <see cref="IEqualityComparer{T}"/> and transformation matrix.</summary>
+        /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEqualityComparer<Point2>? comparer, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(cellToPositionMatrix, swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class that contains the elements copied from the specified collection.</summary>
+        /// <exception cref="ArgumentNullException">collection is null. -or- item is null.</exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEnumerable<KeyValuePair<Point2, int>> collection, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(collection);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class that contains the elements copied from the specified collection and with the specified transformation matrix.</summary>
+        /// <exception cref="ArgumentNullException">collection is null. -or- item is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEnumerable<KeyValuePair<Point2, int>> collection, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(cellToPositionMatrix, swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(collection);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified capacity and <see cref="IEqualityComparer{T}"/>.</summary>
+        /// <exception cref="ArgumentOutOfRangeException">capacity is less than 0.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(int capacity, IEqualityComparer<Point2>? comparer, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(capacity, comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified capacity, <see cref="IEqualityComparer{T}"/> and transformation matrix.</summary>
+        /// <exception cref="ArgumentOutOfRangeException">capacity is less than 0.</exception>
+        /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(int capacity, IEqualityComparer<Point2>? comparer, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(cellToPositionMatrix, swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(capacity, comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class that contains the elements copied from the specified collection and with the specified <see cref="IEqualityComparer{T}"/>.</summary>
+        /// <exception cref="ArgumentNullException">collection is null. -or- item is null.</exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEnumerable<KeyValuePair<Point2, int>> collection, IEqualityComparer<Point2>? comparer, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(collection, comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class that contains the elements copied from the specified collection and with the specified <see cref="IEqualityComparer{T}"/> and transformation matrix.</summary>
+        /// <exception cref="ArgumentNullException">collection is null. -or- item is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the matrix cannot be inverted.</exception>
+        /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
+        public Heatmap3to2(IEnumerable<KeyValuePair<Point2, int>> collection, IEqualityComparer<Point2>? comparer, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY)
+            : this(cellToPositionMatrix, swizzle)
+            => strengthByCell = new Dictionary<Point2, int>(collection, comparer);
+
+        /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class.</summary>
+        /// <param name="capacity">The initial number of elements that the internal <see cref="Dictionary{TKey, TValue}"/> can contain.</param>
+        /// <param name="collection">The <see cref="IEnumerable{T}"/> whose elements are copied to the internal <see cref="Dictionary{TKey, TValue}"/>.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items, or null to use the default <see cref="EqualityComparer{T}"/> for the type of the item.</param>
+        /// <param name="cellToPositionMatrix">The transformation matrix. This equals the <see cref="CellToPositionMatrix"/> property. Its inverse equals the <see cref="PositionToCellMatrix"/> property.</param>
         /// <param name="swizzle">The swizzle to use when transforming between positions and cells.</param>
-        /// <exception cref="ArgumentException">Thrown when the resulting matrix cannot be inverted.</exception>
-        public Heatmap3to2(Vector3 position, Quaternion rotation, Vector3 scales, Swizzle3to2 swizzle = Swizzle3to2.XY) : this(Matrix.CreateTransformation4x4(position, rotation, scales), swizzle) { }
+        internal static void Heatmap_doc(int capacity, IEnumerable<KeyValuePair<Point2, int>> collection, IEqualityComparer<Point2>? comparer, Matrix4x4 cellToPositionMatrix, Swizzle3to2 swizzle = Swizzle3to2.XY) { }
 
         /// <inheritdoc />
         public Point2 GetCell(Vector3 position)
@@ -87,7 +155,7 @@ namespace Cubusky.Heatmaps
         /// <inheritdoc cref="Heatmap3.IsReadOnly" />
         public bool IsReadOnly => false;
 
-        /// <inheritdoc cref="Heatmap3.Add(Point3)" />
+        /// <inheritdoc />
         public void Add(Point2 cell) => AddInternal(cell, 1);
 
         /// <inheritdoc />
@@ -108,11 +176,18 @@ namespace Cubusky.Heatmaps
         /// <inheritdoc cref="Heatmap3.Clear" />
         public void Clear() => strengthByCell.Clear();
 
-        /// <inheritdoc cref="Heatmap3.Contains(Point3)" />
+        /// <inheritdoc />
         public bool Contains(Point2 cell) => strengthByCell.ContainsKey(cell);
 
-        /// <inheritdoc cref="Heatmap3.CopyTo(Point3[], int)" />
-        public void CopyTo(Point2[] array, int arrayIndex) => strengthByCell.Keys.CopyTo(array, arrayIndex);
+        /// <inheritdoc />
+        public bool Contains(Point2 cell, int strength)
+        {
+            Throw.IfArgumentNegativeOrZero(strength, nameof(strength));
+            return strengthByCell.TryGetValue(cell, out var value) && value == strength;
+        }
+
+        /// <inheritdoc cref="Heatmap3.CopyTo(KeyValuePair{Point3, int}[], int)" />
+        public void CopyTo(KeyValuePair<Point2, int>[] array, int arrayIndex) => ((ICollection<KeyValuePair<Point2, int>>)strengthByCell).CopyTo(array, arrayIndex);
 
         /// <inheritdoc cref="Heatmap3.Remove(Point3)" />
         public bool Remove(Point2 cell) => RemoveInternal(cell, 1);
@@ -128,7 +203,7 @@ namespace Cubusky.Heatmaps
             && ((strengthByCell[cell] -= strength) > 0 || strengthByCell.Remove(cell));
 
         /// <inheritdoc cref="Heatmap3.GetEnumerator" />
-        public IEnumerator<Point2> GetEnumerator() => strengthByCell.Keys.GetEnumerator();
+        public IEnumerator<KeyValuePair<Point2, int>> GetEnumerator() => strengthByCell.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

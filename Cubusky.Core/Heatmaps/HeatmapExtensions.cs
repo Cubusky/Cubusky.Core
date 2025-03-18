@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +31,15 @@ namespace Cubusky.Heatmaps
         /// <returns><see langword="true" /> if the <see cref="IHeatmap{TPoint, TVector}"/> contains a cell at the specified position; otherwise, <see langword="false" />.</returns>
         public static bool Contains<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap, TVector position) => heatmap.Contains(heatmap.GetCell(position));
 
+
+        /// <summary>Determines whether the <see cref="IHeatmap{TPoint, TVector}"/> contains a cell at the specified position with the specified strength.</summary>
+        /// <param name="heatmap">The <see cref="IHeatmap{TPoint, TVector}"/> interface instance.</param>
+        /// <param name="position">The position to check.</param>
+        /// <param name="strength">The strength to check at the specified position.</param>
+        /// <returns><see langword="true"/> if the position was successfully located and has the specified strength; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">strength is negative or zero.</exception>
+        public static bool Contains<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap, TVector position, int strength) => heatmap.Contains(heatmap.GetCell(position), strength);
+
         /// <summary>Removes a strength at the specified position. If the remaining strength is 0 or less, the cell is removed from the heatmap.</summary>
         /// <param name="heatmap">The <see cref="IHeatmap{TPoint, TVector}"/> interface instance.</param>
         /// <param name="position">The vector representing the position in the heatmap.</param>
@@ -48,6 +57,6 @@ namespace Cubusky.Heatmaps
         /// <summary>Returns an enumerator that iterates through the positions of the <see cref="IHeatmap{TPoint, TVector}"/>.</summary>
         /// <param name="heatmap">The <see cref="IHeatmap{TPoint, TVector}"/> interface instance.</param>
         /// <returns>An <see cref="IEnumerator{T}"/> for the positions of the <see cref="IHeatmap{TPoint, TVector}"/>.</returns>
-        public static IEnumerable<TVector> GetPositions<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap) => heatmap.Select(heatmap.GetPosition);
+        public static IEnumerable<KeyValuePair<TVector, int>> GetStrengthByPositions<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap) => heatmap.Select(strengthByCell => KeyValuePair.Create(heatmap.GetPosition(strengthByCell.Key), strengthByCell.Value));
     }
 }

@@ -1,9 +1,10 @@
-﻿using Cubusky.Numerics;
+using Cubusky.Heatmaps;
+using Cubusky.Numerics;
 using System;
 using System.Numerics;
 using Xunit;
 
-namespace Cubusky.Heatmaps.Tests
+namespace Cubusky.Tests.Heatmaps
 {
     public class Heatmap2Tests
     {
@@ -15,7 +16,7 @@ namespace Cubusky.Heatmaps.Tests
         public static readonly Heatmap2 heatmapTranslated = new Heatmap2(Matrix3x2.CreateTranslation(position));
         public static readonly Heatmap2 heatmapRotated = new Heatmap2(Matrix3x2.CreateRotation(radians));
         public static readonly Heatmap2 heatmapScaled = new Heatmap2(Matrix3x2.CreateScale(scales));
-        public static readonly Heatmap2 heatmapTransformed = new Heatmap2(position, radians, scales);
+        public static readonly Heatmap2 heatmapTransformed = new Heatmap2(Matrix.CreateTransformation3x2(position, radians, scales));
 
         public static readonly TheoryData<Heatmap2, Vector2, Point2> HeatmapPositionCell = new TheoryData<Heatmap2, Vector2, Point2>()
         {
@@ -56,9 +57,9 @@ namespace Cubusky.Heatmaps.Tests
         public static Heatmap2 Copy(Heatmap2 heatmap)
         {
             var copy = new Heatmap2(heatmap.CellToPositionMatrix);
-            foreach (var cell in heatmap)
+            foreach (var (cell, strength) in heatmap)
             {
-                copy.Add(cell, heatmap[cell]);
+                copy.Add(cell, strength);
             }
             return copy;
         }
