@@ -1,7 +1,8 @@
+using Cubusky.Numerics;
 using System.Numerics;
 using Xunit;
 
-namespace Cubusky.Numerics.Tests
+namespace Cubusky.Tests.Numerics
 {
     public class Matrix3x2ExtensionsTests
     {

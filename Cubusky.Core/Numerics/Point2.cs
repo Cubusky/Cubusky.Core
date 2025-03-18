@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
@@ -88,7 +88,6 @@ namespace Cubusky.Numerics
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this = this.WithElement(index, value);
         }
-
 
         /// <summary>Adds two points together.</summary>
         /// <param name="left">The first point to add.</param>

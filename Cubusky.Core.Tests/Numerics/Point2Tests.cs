@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Cubusky.Numerics;
+using System;
 using Xunit;
 
-namespace Cubusky.Numerics.Tests
+namespace Cubusky.Tests.Numerics
 {
     public class Point2Tests
     {

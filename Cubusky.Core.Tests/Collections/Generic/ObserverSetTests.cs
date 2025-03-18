@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Cubusky.Collections.Generic;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Cubusky.Collections.Generic.Tests
+namespace Cubusky.Tests.Collections.Generic
 {
     public class ObserverSetTests
     {
