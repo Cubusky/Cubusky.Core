@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cubusky.Core.Tests", "Cubus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cubusky.Core.Benchmarks", "Cubusky.Core.Benchmarks\Cubusky.Core.Benchmarks.csproj", "{F66EB247-85EA-469A-BC5C-67817FCDE04E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cubusky.Core.SourceGenerators", "Cubusky.Core.SourceGenerators\Cubusky.Core.SourceGenerators.csproj", "{2E1BF085-61DE-4F3C-8250-D78022F3B471}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{F66EB247-85EA-469A-BC5C-67817FCDE04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F66EB247-85EA-469A-BC5C-67817FCDE04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F66EB247-85EA-469A-BC5C-67817FCDE04E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E1BF085-61DE-4F3C-8250-D78022F3B471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E1BF085-61DE-4F3C-8250-D78022F3B471}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E1BF085-61DE-4F3C-8250-D78022F3B471}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E1BF085-61DE-4F3C-8250-D78022F3B471}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
