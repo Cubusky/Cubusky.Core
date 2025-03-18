@@ -2,15 +2,36 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+	  
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<RootNamespace>Cubusky</RootNamespace>
+	  
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	
 	<Authors>Casey Hofland</Authors>
 	<Description>Contains core C# functionality of the Cubusky organization.</Description>
 	<PackageTags>Cubusky;Extensions;Utilities</PackageTags>
 	<NeutralLanguage>en-US</NeutralLanguage>
+	<ApplicationIcon>CubuskyLogo_cs_icon.ico</ApplicationIcon>
+	<PlatformTarget>x86</PlatformTarget>
+	<SignAssembly>True</SignAssembly>
+	<DelaySign>False</DelaySign>
+	<AssemblyOriginatorKeyFile>..\Cubusky.snk</AssemblyOriginatorKeyFile>
+	<Title>Cubusky</Title>
+	<PackageIcon>CubuskyLogo_cs_icon.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	<AnalysisLevel>none</AnalysisLevel>
+	<RepositoryType>git</RepositoryType>
+	<RepositoryUrl>https://github.com/Cubusky/Cubusky.Core</RepositoryUrl>
+	<Copyright>All rights reserved</Copyright>
+	<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+	<Company>Cubusky</Company>
+	<EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
@@ -46,32 +67,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="CubuskyLogo_cs_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
 
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.Core.Benchmarks</_Parameter1>
-	</AssemblyAttribute>
+  <ItemGroup>
+	<InternalsVisibleTo Include="$(AssemblyName).Benchmarks" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="$(AssemblyName).SourceGenerators" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="$(AssemblyName).Tests" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	  
+	<InternalsVisibleTo Include="Cubusky.Unity" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Editor" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps.Editor" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+  </ItemGroup>
 
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.Core.Tests</_Parameter1>
-	</AssemblyAttribute>
-
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.Unity</_Parameter1>
-	</AssemblyAttribute>
-
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.UnityEditor</_Parameter1>
-	</AssemblyAttribute>
-
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.Unity.Heatmaps</_Parameter1>
-	</AssemblyAttribute>
-
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Cubusky.UnityEditor.Heatmaps</_Parameter1>
-	</AssemblyAttribute>
+  <ItemGroup>
+    <None Include="..\CubuskyLogo_cs_icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
