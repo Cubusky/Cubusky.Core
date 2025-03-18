@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
@@ -10,9 +8,7 @@ using System.Runtime.InteropServices;
 namespace Cubusky.Numerics
 {
     /// <summary>Represents a point with two integer values.</summary>
-    public struct Point2 : IIndexable<int>
-        , IEquatable<Point2>
-        , IFormattable
+    public struct Point2 : IEquatable<Point2>, IFormattable
 #if NET8_0_OR_GREATER
         , IPoint<Point2>
         , IDivisionOperators<Point2, int, Point2>
@@ -92,7 +88,6 @@ namespace Cubusky.Numerics
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => this = this.WithElement(index, value);
         }
-
 
         /// <summary>Adds two points together.</summary>
         /// <param name="left">The first point to add.</param>
@@ -488,16 +483,6 @@ namespace Cubusky.Numerics
         /// <altmember cref="Length"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly int LengthSquared() => Dot(this, this);
-
-        /// <summary>Returns an enumerator that iterates through the elements of the point.</summary>
-        /// <returns>An enumerator that can be used to iterate through the elements of the point.</returns>
-        public readonly IEnumerator<int> GetEnumerator()
-        {
-            yield return X;
-            yield return Y;
-        }
-
-        readonly IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>Returns the string representation of the current instance using default formatting.</summary>
         /// <returns>The string representation of the current instance.</returns>

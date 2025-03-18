@@ -3,19 +3,18 @@ using System.Runtime.CompilerServices;
 
 namespace Cubusky.Numerics
 {
-    /// <summary>Provides extension methods for the <see cref="Matrix3x2"/> struct.</summary>
-    public static class Matrix3x2Extensions
+    public static partial class Matrix
     {
         /// <summary>Creates a transformation matrix from the specified vector position, single-precision rotation in radians, and single-precision scalar.</summary>
-        /// <inheritdoc cref="Matrix4x4Extensions.doc_CreateTransformation(Vector3, Quaternion, Vector3, float, float, float, float, float, float, Vector3)" />
+        /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix3x2 CreateTransformation(Vector2 position, float radians, float scale)
-            => CreateTransformation(position, radians, Vector2.One * scale);
+        public static Matrix3x2 CreateTransformation3x2(Vector2 position, float radians, float scale)
+            => CreateTransformation3x2(position, radians, Vector2.One * scale);
 
         /// <summary>Creates a transformation matrix from the specified vector position, single-precision rotation in radians, and vector scale.</summary>
-        /// <inheritdoc cref="Matrix4x4Extensions.doc_CreateTransformation(Vector3, Quaternion, Vector3, float, float, float, float, float, float, Vector3)" />
+        /// <inheritdoc cref="doc_CreateTransformation" />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix3x2 CreateTransformation(Vector2 position, float radians, Vector2 scales)
+        public static Matrix3x2 CreateTransformation3x2(Vector2 position, float radians, Vector2 scales)
         {
             var translationMatrix = Matrix3x2.CreateTranslation(position);
             var rotationMatrix = Matrix3x2.CreateRotation(radians);

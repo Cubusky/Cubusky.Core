@@ -130,7 +130,7 @@ namespace Cubusky
         /// <param name="random">The <see cref="Random"/> class instance.</param>
         /// <returns>A <see cref="DateTime"/> that is greater than or equal to <see cref="DateTime.UnixEpoch"/> and less than <see cref="DateTime.MaxValue"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DateTime NextDatetime(this Random random) => new DateTime(random.NextInt64());
+        public static DateTime NextDatetime(this Random random) => new DateTime(random.NextInt64(DateTime.UnixEpoch.Ticks, DateTime.MaxValue.Ticks));
 
         /// <summary>Returns a non-negative random <see cref="DateTime"/> that is less than the specified maximum.</summary>
         /// <param name="random">The <see cref="Random"/> class instance.</param>
@@ -141,7 +141,7 @@ namespace Cubusky
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than 0.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DateTime NextDatetime(this Random random, DateTime maxValue) => new DateTime(random.NextInt64(maxValue.Ticks));
+        public static DateTime NextDatetime(this Random random, DateTime maxValue) => new DateTime(random.NextInt64(DateTime.UnixEpoch.Ticks, maxValue.Ticks));
 
         /// <summary>Returns a random <see cref="DateTime"/> that is within a specified range.</summary>
         /// <param name="random">The <see cref="Random"/> class instance.</param>
