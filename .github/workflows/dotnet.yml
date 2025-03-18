@@ -25,6 +25,17 @@ jobs:
         dotnet-version: ${{matrix.dotnet-version}}
         #cache: true
         #cache-dependency-path: './Cubusky.Core/packages.lock.json'
+
+    - name : Install  OpenSSL 1.1 manually
+      run : |
+        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        tar -xvf openssl-1.1.1w.tar.gz
+        cd openssl-1.1.1w
+        ./config --prefix=/usr/local/openssl
+        make
+        sudo make install
+        export PATH=/usr/local/openssl/bin:$PATH
+        
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
