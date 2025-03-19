@@ -214,10 +214,10 @@ namespace Cubusky.Tests.Numerics
         [Fact]
         public void ToString_DefaultFormat_ShouldReturnCorrectString()
         {
-            var seperator = NumberFormatInfo.GetInstance(CultureInfo.CurrentCulture).NumberGroupSeparator;
-
             var box = new Box(1, 2, 3, 4, 5, 6);
-            var expected = $"{{1{seperator} 2{seperator} 3{seperator} 4{seperator} 5{seperator} 6}}";
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+
+            var expected = "{1, 2, 3, 4, 5, 6}";
             Assert.Equal(expected, box.ToString());
         }
 

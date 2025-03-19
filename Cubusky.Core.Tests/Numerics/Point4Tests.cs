@@ -1,6 +1,6 @@
-﻿using Cubusky.Numerics;
+using Cubusky.Numerics;
 using System;
-using System.Numerics;
+using System.Globalization;
 using Xunit;
 
 namespace Cubusky.Tests.Numerics
@@ -280,15 +280,13 @@ namespace Cubusky.Tests.Numerics
         {
             // Arrange
             var point = new Point4(1, 2, 3, 4);
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
 
             // Act
             var result = point.ToString();
 
-            var v = new Vector4(1, 2, 3, 4);
-            var s = v.ToString();
-
             // Assert
-            Assert.Equal("<1. 2. 3. 4>", result);
+            Assert.Equal("<1, 2, 3, 4>", result);
         }
 
         [Fact]
