@@ -16,7 +16,6 @@
 	<PackageTags>Cubusky;Extensions;Utilities</PackageTags>
 	<NeutralLanguage>en-US</NeutralLanguage>
 	<ApplicationIcon>CubuskyLogo_cs_icon.ico</ApplicationIcon>
-	<PlatformTarget>x86</PlatformTarget>
 	<SignAssembly>True</SignAssembly>
 	<DelaySign>False</DelaySign>
 	<AssemblyOriginatorKeyFile>..\Cubusky.snk</AssemblyOriginatorKeyFile>
@@ -71,7 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 

@@ -6,6 +6,7 @@
 	<RootNamespace>Cubusky.Tests</RootNamespace>
 	<Nullable>enable</Nullable>
 	<IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
