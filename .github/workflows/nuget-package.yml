@@ -34,4 +34,4 @@ jobs:
       - name: Create the package
         run: dotnet pack --configuration Release Cubusky.Core
       - name: Publish the package to GPR
-        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg
+        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg --api-key "${{secrets.NUGET_KEY}}"
