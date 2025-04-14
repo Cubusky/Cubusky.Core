@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  test-dotnet-3.1:
+  test-dotnet-3_1:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
     - run: dotnet build --no-restore
     - run: dotnet test --no-build --verbosity normal
 
-  test-dotnet-8.0:
+  test-dotnet-8_0:
     runs-on: ubuntu-latest
     steps:
     - name: Setup .NET 8.0
