@@ -25,6 +25,7 @@ jobs:
   test-dotnet-8_0:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@v4
       with:
