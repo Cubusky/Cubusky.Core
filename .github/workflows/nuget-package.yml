@@ -9,7 +9,6 @@ on:
 
 jobs:
   deploy:
-  
     runs-on: ubuntu-latest
 #    strategy:
 #      matrix:
@@ -30,8 +29,10 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Build the package
-        run: dotnet build --configuration Release Cubusky.Core
-      - name: Create the package
-        run: dotnet pack --configuration Release Cubusky.Core
+        run: dotnet build -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
+      - name: Test the package
+        run: dotnet test -c Release --no-build
+      - name: Pack the package
+        run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
       - name: Publish the package to GPR
         run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}

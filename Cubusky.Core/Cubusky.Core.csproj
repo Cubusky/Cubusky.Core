@@ -2,34 +2,41 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
-	  
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>enable</Nullable>
 	<RootNamespace>Cubusky</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+	
+	<!-- Win 32 -->
+	<ApplicationIcon>favicon.ico</ApplicationIcon>
 	  
+	<!-- Build Output -->
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	
-	<Authors>Casey Hofland</Authors>
+	<!-- NuGet Packaging -->
+	<PackageVersion>$(Version)</PackageVersion>
+	<Title>Cubusky</Title>
 	<Description>Contains core C# functionality of the Cubusky organization.</Description>
+	<Company>Cubusky</Company>
+	<Authors>Casey Hofland</Authors>
 	<PackageTags>Cubusky;Extensions;Utilities</PackageTags>
 	<NeutralLanguage>en-US</NeutralLanguage>
-	<ApplicationIcon>CubuskyLogo_cs_icon.ico</ApplicationIcon>
+	<PackageIcon>Icon.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	<RepositoryUrl>https://github.com/Cubusky/Cubusky.Core</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	
+	<!-- Strong Naming -->
 	<SignAssembly>True</SignAssembly>
 	<DelaySign>False</DelaySign>
 	<AssemblyOriginatorKeyFile>..\Cubusky.snk</AssemblyOriginatorKeyFile>
-	<Title>Cubusky</Title>
-	<PackageIcon>CubuskyLogo_cs_icon.png</PackageIcon>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	  
+	<!-- Code Analysis -->
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	<AnalysisLevel>none</AnalysisLevel>
-	<RepositoryType>git</RepositoryType>
-	<RepositoryUrl>https://github.com/Cubusky/Cubusky.Core</RepositoryUrl>
-	<Copyright>All rights reserved</Copyright>
 	<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-	<Company>Cubusky</Company>
 	<EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>
 
@@ -66,10 +73,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="CubuskyLogo_cs_icon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
@@ -86,7 +89,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\CubuskyLogo_cs_icon.png">
+    <Content Include="favicon.ico" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <None Include="..\Icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
