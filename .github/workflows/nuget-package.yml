@@ -21,12 +21,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x' # SDK Version to use.
-          source-url: https://nuget.pkg.github.com/Cubusky/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: dotnet build
         run: dotnet build -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
       - name: dotnet pack
         run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
-      - name: dotnet nuget push
-        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg -k ${{secrets.GITHUB_TOKEN}} -s https://api.nuget.org/v3/index.json
+      - name: Push Package to NuGet.org
+        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      - name: Push Package to GitHub.com
+        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg -k ${{secrets.GITHUB_TOKEN}} -s https://nuget.pkg.github.com/Cubusky/index.json
