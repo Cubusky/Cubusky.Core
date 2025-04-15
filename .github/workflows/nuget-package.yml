@@ -28,11 +28,11 @@ jobs:
           source-url: https://nuget.pkg.github.com/Cubusky/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Build the package
+      - name: dotnet build
         run: dotnet build -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
-      - name: Test the package
+      - name: dotnet test --no-build
         run: dotnet test -c Release --no-build
-      - name: Pack the package
+      - name: dotnet pack
         run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
-      - name: Publish the package to GPR
+      - name: dotnet nuget push
         run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}
