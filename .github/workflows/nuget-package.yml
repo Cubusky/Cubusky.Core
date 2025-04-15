@@ -29,4 +29,4 @@ jobs:
       - name: dotnet pack
         run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
       - name: dotnet nuget push
-        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push Cubusky.Core/bin/Release/*.nupkg -k ${{secrets.GITHUB_TOKEN}} -s https://api.nuget.org/v3/index.json
