@@ -8,6 +8,10 @@
     <Nullable>enable</Nullable>
 	<Optimize>true</Optimize>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+
+	<!-- Strong Naming -->
+	<SignAssembly>True</SignAssembly>
+	<AssemblyOriginatorKeyFile>..\opensource.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

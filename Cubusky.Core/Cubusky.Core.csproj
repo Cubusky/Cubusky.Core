@@ -30,8 +30,9 @@
 	
 	<!-- Strong Naming -->
 	<SignAssembly>True</SignAssembly>
-	<DelaySign>False</DelaySign>
-	<AssemblyOriginatorKeyFile>..\Cubusky.snk</AssemblyOriginatorKeyFile>
+	<AssemblyOriginatorKeyFile>..\opensource.snk</AssemblyOriginatorKeyFile>
+	<PublicKey>0024000004800000940000000602000000240000525341310004000001000100896b0195b2086004cf3f669310d9802f2d3e1d64200ecb78c8824fda8faf46ff52b4b1d0ea0ca11815079523f272a7a7da8b82d4605cf0938be561dc654263e28c644e78734cf5b3a657cff4ce59ae1cee76a7ccdebdf9d4e72cf228d7ab2e848f53771517813ef470669429d8dee0904e89eb5ecbd4c5423f2ef371e969abb7</PublicKey>
+    <PublicKeyToken>9949d3bfab08463a</PublicKeyToken>
 	  
 	<!-- Code Analysis -->
 	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -78,14 +79,14 @@
   </ItemGroup>
 
   <ItemGroup>
-	<InternalsVisibleTo Include="$(AssemblyName).Benchmarks" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
-	<InternalsVisibleTo Include="$(AssemblyName).SourceGenerators" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
-	<InternalsVisibleTo Include="$(AssemblyName).Tests" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="$(AssemblyName).Benchmarks" Key="$(PublicKey)" />
+	<InternalsVisibleTo Include="$(AssemblyName).SourceGenerators" Key="$(PublicKey)" />
+	<InternalsVisibleTo Include="$(AssemblyName).Tests" Key="$(PublicKey)" />
 	  
-	<InternalsVisibleTo Include="Cubusky.Unity" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
-	<InternalsVisibleTo Include="Cubusky.Unity.Editor" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
-	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
-	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps.Editor" Key="0024000004800000940000000602000000240000525341310004000001000100818db62f887352df463d0a79b4d1c4ad8a34df189eee80bc3dda126c5692ab5e8a9bd72aa04d69714f454369c0263a03afdf9e9923e60b7dd5cd49162e8d025973aae0c3e6dad544c149fd57b8d5b489c1431c24342068ab0eb138eab5ed1be4f8955f6a1be98320995f4454ca94fe82e6bc0b9f84b08390e44ba72b0a466eab" />
+	<InternalsVisibleTo Include="Cubusky.Unity" Key="$(PublicKey)" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Editor" Key="$(PublicKey)" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps" Key="$(PublicKey)" />
+	<InternalsVisibleTo Include="Cubusky.Unity.Heatmaps.Editor" Key="$(PublicKey)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,6 +8,10 @@
 	<IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+
+	<!-- Strong Naming -->
+	<SignAssembly>True</SignAssembly>
+	<AssemblyOriginatorKeyFile>..\opensource.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
