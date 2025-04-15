@@ -1,4 +1,4 @@
-![Logo of the project](https://raw.githubusercontent.com/Cubusky/Cubusky.Core/master/CubuskyLogo_cs_icon.png)
+![Icon](https://raw.githubusercontent.com/Cubusky/Cubusky.Core/master/Icon.png)
 
 # Cubusky
 > 
