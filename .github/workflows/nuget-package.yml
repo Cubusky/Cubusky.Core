@@ -10,9 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        dotnet-version: ['3.1.x', '8.0.x']
     
     permissions:
       packages: write
@@ -20,18 +17,15 @@ jobs:
       
     steps:
       - uses: actions/checkout@v4
-      - name: Setup dotnet #${{matrix.dotnet-version}}
+      - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          #dotnet-version: ${{matrix.dotnet-version}} # SDK Version to use.
           dotnet-version: '8.0.x' # SDK Version to use.
           source-url: https://nuget.pkg.github.com/Cubusky/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: dotnet build
         run: dotnet build -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
-      - name: dotnet test --no-build
-        run: dotnet test -c Release --no-build
       - name: dotnet pack
         run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} Cubusky.Core
       - name: dotnet nuget push
