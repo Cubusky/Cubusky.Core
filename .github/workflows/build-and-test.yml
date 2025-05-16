@@ -11,17 +11,26 @@ on:
 
 jobs:
   build-and-test:
+  
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x', '8.0.x' ]
+    
     steps:
     - uses: actions/checkout@v4
+    - name: Setup dotnet ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
     #- name: Setup .NET Core 3.1
       #uses: actions/setup-dotnet@v4
       #with:
         #dotnet-version: '3.1.x'
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+    #- name: Setup .NET 8.0
+      #uses: actions/setup-dotnet@v4
+      #with:
+        #dotnet-version: '8.0.x'
     - run: dotnet restore
     - run: dotnet build --no-restore
     - run: dotnet test --no-build --verbosity normal
