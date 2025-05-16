@@ -154,6 +154,13 @@ namespace Cubusky.Heatmaps
         internal bool RemoveInternal(Point2 cell, int strength) => strengthByCell.ContainsKey(cell)
             && ((strengthByCell[cell] -= strength) > 0 || strengthByCell.Remove(cell));
 
+        /// <summary>Sets the capacity of this heatmap to what it would be if it had been originally initialized with all its entries.</summary>
+        public void TrimExcess() => strengthByCell.TrimExcess();
+
+        /// <summary>Sets the capacity of this heatmap to hold up a specified number of entries without any further expansion of its backing storage.</summary>
+        /// <exception cref="ArgumentOutOfRangeException" />
+        public void TrimExcess(int capacity) => strengthByCell.TrimExcess(capacity);
+
         /// <inheritdoc cref="Heatmap3.GetEnumerator" />
         public IEnumerator<KeyValuePair<Point2, int>> GetEnumerator() => strengthByCell.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

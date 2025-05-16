@@ -7,6 +7,7 @@
 	<RootNamespace>Cubusky.Benchmarks</RootNamespace>
     <Nullable>enable</Nullable>
 	<Optimize>true</Optimize>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
 	<!-- Strong Naming -->
