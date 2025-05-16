@@ -22,11 +22,11 @@ namespace Cubusky.Tests.IO.Saving
 
         public static readonly TheoryData<IIOStreamProvider, IStreamSerializer, ICompressionStreamProvider> SaverData = new TheoryData<IIOStreamProvider, IStreamSerializer, ICompressionStreamProvider>()
         {
-            { FileIO, new JsonSerializer(), new BrotliCompression() },
-            { FileIO, new JsonSerializer(), new DeflateCompression() },
-            { FileIO, new JsonSerializer(), new GZipCompression() },
+            { FileIO, new JsonStreamSerializer(), new BrotliCompression() },
+            { FileIO, new JsonStreamSerializer(), new DeflateCompression() },
+            { FileIO, new JsonStreamSerializer(), new GZipCompression() },
 #if NET8_0_OR_GREATER
-            { FileIO, new JsonSerializer(), new ZLibCompression() },
+            { FileIO, new JsonStreamSerializer(), new ZLibCompression() },
 #endif
         };
 
