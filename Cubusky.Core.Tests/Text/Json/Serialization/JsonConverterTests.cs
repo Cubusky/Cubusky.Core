@@ -13,6 +13,8 @@ namespace Cubusky.Tests.Text.Json.Serialization
         public abstract TInput Result { get; }
         public abstract string Json { get; }
 
+        public virtual void Validate(TInput expected, TInput actual) => Assert.StrictEqual(expected, actual);
+
         public JsonConverterTests(params JsonConverter<TInput>[] converters)
         {
             this.Options = new JsonSerializerOptions();
@@ -26,7 +28,8 @@ namespace Cubusky.Tests.Text.Json.Serialization
         public virtual void Read_ValidJson_ReturnsExpectedResult()
         {
             var result = JsonSerializer.Deserialize<TInput>(Json, Options);
-            Assert.Equal(Result, result);
+            Assert.NotNull(result);
+            Validate(Result, result);
         }
 
         [Fact]
@@ -59,10 +62,10 @@ namespace Cubusky.Tests.Text.Json.Serialization
                 reader.ReadOrThrow(JsonTokenType.EndObject);
 
                 return value;
-        }
+            }
 
             public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
-        {
+            {
                 writer.WriteStartObject();
                 writer.WriteNumber("i", int.Parse(value));
                 writer.WriteEndObject();
