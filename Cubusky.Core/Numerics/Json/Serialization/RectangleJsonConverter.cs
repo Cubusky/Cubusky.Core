@@ -1,43 +1,58 @@
 using Cubusky.Text.Json.Serialization;
+using System;
 using System.Text.Json;
-
-#if !NET8_0_OR_GREATER
-using System.Text.Json.Serialization.Metadata;
-#endif
 
 namespace Cubusky.Numerics.Json.Serialization
 {
     /// <summary>Converts a <see cref="Rectangle"/> to or from JSON using an array of two <see cref="int"/> values.</summary>
-    public class RectangleJsonConverter : JsonConverter<Rectangle, int[]>
+    public sealed class RectangleJsonConverter : SpanJsonConverter<Rectangle, int>
     {
-        /// <summary>Initializes a new instance of the <see cref="RectangleJsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public RectangleJsonConverter() : base(new Int32ArrayContext()) { }
-#else
-        public RectangleJsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 4;
 
         /// <inheritdoc />
-        protected override int[] Convert(Rectangle value) => new int[] { value.X, value.Y, value.Width, value.Height };
+        public override Rectangle FromSpan(Span<int> span) => new Rectangle(span[0], span[1], span[2], span[3]);
 
         /// <inheritdoc />
-        protected override Rectangle Revert(int[] value) => value.Length == 4 ? new Rectangle(value[0], value[1], value[2], value[3]) : throw new JsonException();
+        public override void ToSpan(Rectangle value, Span<int> span)
+        {
+            span[0] = value.X;
+            span[1] = value.Y;
+            span[2] = value.Width;
+            span[3] = value.Height;
+        }
+
+        /// <inheritdoc />
+        protected override int ReadValue(ref Utf8JsonReader reader) => reader.GetInt32();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, int value) => writer.WriteNumberValue(value);
     }
 
     /// <summary>Converts a <see cref="Box"/> to or from JSON using an array of three <see cref="int"/> values.</summary>
-    public class BoxJsonConverter : JsonConverter<Box, int[]>
+    public sealed class BoxJsonConverter : SpanJsonConverter<Box, int>
     {
-        /// <summary>Initializes a new instance of the <see cref="BoxJsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public BoxJsonConverter() : base(new Int32ArrayContext()) { }
-#else
-        public BoxJsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 6;
 
         /// <inheritdoc />
-        protected override int[] Convert(Box value) => new int[] { value.X, value.Y, value.Z, value.Width, value.Height, value.Depth };
+        public override Box FromSpan(Span<int> span) => new Box(span[0], span[1], span[2], span[3], span[4], span[5]);
 
         /// <inheritdoc />
-        protected override Box Revert(int[] value) => value.Length == 6 ? new Box(value[0], value[1], value[2], value[3], value[4], value[5]) : throw new JsonException();
+        public override void ToSpan(Box value, Span<int> span)
+        {
+            span[0] = value.X;
+            span[1] = value.Y;
+            span[2] = value.Z;
+            span[3] = value.Width;
+            span[4] = value.Height;
+            span[5] = value.Depth;
+        }
+
+        /// <inheritdoc />
+        protected override int ReadValue(ref Utf8JsonReader reader) => reader.GetInt32();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, int value) => writer.WriteNumberValue(value);
     }
 }

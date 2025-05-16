@@ -1,7 +1,7 @@
-using Cubusky.Text.Json.Serialization;
+using Cubusky.Text.Json;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
 using Xunit;
 
 namespace Cubusky.Tests.Text.Json.Serialization
@@ -42,21 +42,31 @@ namespace Cubusky.Tests.Text.Json.Serialization
         public override string Result => "123";
         public override string Json => "{\"i\":123}";
 
-        public JsonConverterTests() : base(new TestStructJsonConverter())
+        public JsonConverterTests() : base(new StringToPropertyIJsonConverter())
         {
         }
 
-        private struct TestStruct
+        private class StringToPropertyIJsonConverter : JsonConverter<string>
         {
-            public int i { get; set; }
+            public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                reader.ThrowIfNotTokenType(JsonTokenType.StartObject);
+                reader.ReadOrThrow("i");
+                reader.ThrowIfNotTokenType(JsonTokenType.Number);
+
+                string value = reader.GetInt32().ToString();
+
+                reader.ReadOrThrow(JsonTokenType.EndObject);
+
+                return value;
         }
 
-        private class TestStructJsonConverter : JsonConverter<string, TestStruct>
+            public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
-            public TestStructJsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-
-            protected override string Revert(TestStruct value) => value.i.ToString();
-            protected override TestStruct Convert(string value) => new TestStruct() { i = int.Parse(value) };
+                writer.WriteStartObject();
+                writer.WriteNumber("i", int.Parse(value));
+                writer.WriteEndObject();
+            }
         }
     }
 }
