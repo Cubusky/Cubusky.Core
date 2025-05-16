@@ -1,7 +1,7 @@
-﻿namespace Cubusky.Heatmaps
+namespace Cubusky.Heatmaps
 {
     /// <summary>Represents the swizzle options for converting a 3D vector to a 2D vector.</summary>
-    public enum Swizzle3to2
+    public enum Swizzle3to2 : byte
     {
         /// <summary>Swizzle option to convert the X and Y components of a 3D vector to a 2D vector.</summary>
         XY,
