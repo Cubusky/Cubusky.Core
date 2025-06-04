@@ -9,19 +9,19 @@ namespace Cubusky.Tests.IO.Serialization
     {
         public static readonly TheoryData<IStreamSerializer, string> StreamSerializers = new TheoryData<IStreamSerializer, string>()
         {
-            { new JsonSerializer(), Person.Json },
+            { new JsonStreamSerializer(), Person.Json },
 #if NET8_0_OR_GREATER
-            { new JsonSerializer(PersonContext.Default.Person), Person.Json },
-            { new JsonSerializer(PersonContext.Default), Person.Json },
+            { new JsonStreamSerializer(PersonContext.Default.Person), Person.Json },
+            { new JsonStreamSerializer(PersonContext.Default), Person.Json },
 #endif
         };
 
         public static readonly TheoryData<IAsyncStreamSerializer, string> AsyncStreamSerializers = new TheoryData<IAsyncStreamSerializer, string>()
         {
-            { new JsonSerializer(), Person.Json },
+            { new JsonStreamSerializer(), Person.Json },
 #if NET8_0_OR_GREATER
-            { new JsonSerializer(PersonContext.Default.Person), Person.Json },
-            { new JsonSerializer(PersonContext.Default), Person.Json },
+            { new JsonStreamSerializer(PersonContext.Default.Person), Person.Json },
+            { new JsonStreamSerializer(PersonContext.Default), Person.Json },
 #endif
         };
 

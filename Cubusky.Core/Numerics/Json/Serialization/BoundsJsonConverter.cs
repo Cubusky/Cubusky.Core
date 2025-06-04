@@ -1,43 +1,58 @@
 using Cubusky.Text.Json.Serialization;
+using System;
 using System.Text.Json;
-
-#if !NET8_0_OR_GREATER
-using System.Text.Json.Serialization.Metadata;
-#endif
 
 namespace Cubusky.Numerics.Json.Serialization
 {
     /// <summary>Converts a <see cref="Bounds2"/> to or from JSON using an array of two <see cref="float"/> values.</summary>
-    public class Bounds2JsonConverter : JsonConverter<Bounds2, float[]>
+    public sealed class Bounds2JsonConverter : SpanJsonConverter<Bounds2, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="Bounds2JsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public Bounds2JsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public Bounds2JsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 4;
 
         /// <inheritdoc />
-        protected override float[] Convert(Bounds2 value) => new float[] { value.X, value.Y, value.Width, value.Height };
+        public override Bounds2 FromSpan(Span<float> span) => new Bounds2(span[0], span[1], span[2], span[3]);
 
         /// <inheritdoc />
-        protected override Bounds2 Revert(float[] value) => value.Length == 4 ? new Bounds2(value[0], value[1], value[2], value[3]) : throw new JsonException();
+        public override void ToSpan(Bounds2 value, Span<float> span)
+        {
+            span[0] = value.X;
+            span[1] = value.Y;
+            span[2] = value.Width;
+            span[3] = value.Height;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 
     /// <summary>Converts a <see cref="Bounds3"/> to or from JSON using an array of three <see cref="float"/> values.</summary>
-    public class Bounds3JsonConverter : JsonConverter<Bounds3, float[]>
+    public sealed class Bounds3JsonConverter : SpanJsonConverter<Bounds3, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="Bounds3JsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public Bounds3JsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public Bounds3JsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 6;
 
         /// <inheritdoc />
-        protected override float[] Convert(Bounds3 value) => new float[] { value.X, value.Y, value.Z, value.Width, value.Height, value.Depth };
+        public override Bounds3 FromSpan(Span<float> span) => new Bounds3(span[0], span[1], span[2], span[3], span[4], span[5]);
 
         /// <inheritdoc />
-        protected override Bounds3 Revert(float[] value) => value.Length == 6 ? new Bounds3(value[0], value[1], value[2], value[3], value[4], value[5]) : throw new JsonException();
+        public override void ToSpan(Bounds3 value, Span<float> span)
+        {
+            span[0] = value.X;
+            span[1] = value.Y;
+            span[2] = value.Z;
+            span[3] = value.Width;
+            span[4] = value.Height;
+            span[5] = value.Depth;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 }

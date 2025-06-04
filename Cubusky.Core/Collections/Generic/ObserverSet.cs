@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,7 +208,7 @@ namespace Cubusky.Collections.Generic
         int ICollection<IObserver<T>>.Count => observers.Count;
         int ICollection<IObservable<T>>.Count => observables.Count;
         int IReadOnlyCollection<IObserver<T>>.Count => observers.Count;
-        int IReadOnlyCollection<IObservable<T>>.Count => observers.Count;
+        int IReadOnlyCollection<IObservable<T>>.Count => observables.Count;
 
         bool ICollection<IObserver<T>>.IsReadOnly => false;
         bool ICollection<IObservable<T>>.IsReadOnly => false;

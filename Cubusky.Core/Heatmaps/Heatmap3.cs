@@ -156,6 +156,13 @@ namespace Cubusky.Heatmaps
         /// <param name="arrayIndex">The starting index of the array.</param>
         public void CopyTo(KeyValuePair<Point3, int>[] array, int arrayIndex) => ((ICollection<KeyValuePair<Point3, int>>)strengthByCell).CopyTo(array, arrayIndex);
 
+        /// <summary>Sets the capacity of this heatmap to what it would be if it had been originally initialized with all its entries.</summary>
+        public void TrimExcess() => strengthByCell.TrimExcess();
+
+        /// <summary>Sets the capacity of this heatmap to hold up a specified number of entries without any further expansion of its backing storage.</summary>
+        /// <exception cref="ArgumentOutOfRangeException" />
+        public void TrimExcess(int capacity) => strengthByCell.TrimExcess(capacity);
+
         /// <summary>Returns an enumerator that iterates through the cells of the <see cref="IHeatmap{TPoint, TVector}"/>.</summary>
         /// <returns>An <see cref="IEnumerator{T}"/> for the cells of the <see cref="IHeatmap{TPoint, TVector}"/>.</returns>
         public IEnumerator<KeyValuePair<Point3, int>> GetEnumerator() => strengthByCell.GetEnumerator();

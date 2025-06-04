@@ -25,12 +25,12 @@ namespace Cubusky.Heatmaps
         public readonly Matrix4x4 PositionToCellMatrix = Matrix4x4.Identity;
 
         /// <summary>Gets the swizzle to use when transforming between positions and cells.</summary>
-        public readonly Swizzle3to2 swizzle;
+        public readonly Swizzle3to2 Swizzle;
 
         /// <inheritdoc cref="Heatmap_doc(int, IEnumerable{KeyValuePair{Point2, int}}, IEqualityComparer{Point2}?, Matrix4x4, Swizzle3to2)" />
         public Heatmap3to2(Swizzle3to2 swizzle = Swizzle3to2.XY)
         {
-            this.swizzle = swizzle;
+            this.Swizzle = swizzle;
         }
 
         /// <summary>Initializes a new instance of the <see cref="Heatmap3to2"/> class with the specified transformation matrix.</summary>
@@ -131,22 +131,22 @@ namespace Cubusky.Heatmaps
         public Point2 GetCell(Vector3 position)
         {
             position = Vector3.Transform(position, PositionToCellMatrix);
-            return swizzle switch
+            return Swizzle switch
             {
                 Swizzle3to2.XY => new Point2((int)MathF.Round(position.X), (int)MathF.Round(position.Y)),
                 Swizzle3to2.XZ => new Point2((int)MathF.Round(position.X), (int)MathF.Round(position.Z)),
                 Swizzle3to2.YZ => new Point2((int)MathF.Round(position.Y), (int)MathF.Round(position.Z)),
-                _ => throw new InvalidEnumArgumentException(nameof(swizzle), (int)swizzle, typeof(Swizzle3to2)),
+                _ => throw new InvalidEnumArgumentException(nameof(Swizzle), (int)Swizzle, typeof(Swizzle3to2)),
             };
         }
 
         /// <inheritdoc />
-        public Vector3 GetPosition(Point2 cell) => swizzle switch
+        public Vector3 GetPosition(Point2 cell) => Swizzle switch
         {
             Swizzle3to2.XY => Vector3.Transform(new Vector3(cell.X, cell.Y, 0f), CellToPositionMatrix),
             Swizzle3to2.XZ => Vector3.Transform(new Vector3(cell.X, 0f, cell.Y), CellToPositionMatrix),
             Swizzle3to2.YZ => Vector3.Transform(new Vector3(0f, cell.X, cell.Y), CellToPositionMatrix),
-            _ => throw new InvalidEnumArgumentException(nameof(swizzle), (int)swizzle, typeof(Swizzle3to2)),
+            _ => throw new InvalidEnumArgumentException(nameof(Swizzle), (int)Swizzle, typeof(Swizzle3to2)),
         };
 
         /// <inheritdoc cref="Heatmap3.Count" />
@@ -201,6 +201,13 @@ namespace Cubusky.Heatmaps
 
         internal bool RemoveInternal(Point2 cell, int strength) => strengthByCell.ContainsKey(cell)
             && ((strengthByCell[cell] -= strength) > 0 || strengthByCell.Remove(cell));
+
+        /// <summary>Sets the capacity of this heatmap to what it would be if it had been originally initialized with all its entries.</summary>
+        public void TrimExcess() => strengthByCell.TrimExcess();
+
+        /// <summary>Sets the capacity of this heatmap to hold up a specified number of entries without any further expansion of its backing storage.</summary>
+        /// <exception cref="ArgumentOutOfRangeException" />
+        public void TrimExcess(int capacity) => strengthByCell.TrimExcess(capacity);
 
         /// <inheritdoc cref="Heatmap3.GetEnumerator" />
         public IEnumerator<KeyValuePair<Point2, int>> GetEnumerator() => strengthByCell.GetEnumerator();

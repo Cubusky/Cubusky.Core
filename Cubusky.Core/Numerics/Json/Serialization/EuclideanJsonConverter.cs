@@ -1,44 +1,57 @@
 using Cubusky.Text.Json.Serialization;
+using System;
 using System.Numerics;
 using System.Text.Json;
-
-#if !NET8_0_OR_GREATER
-using System.Text.Json.Serialization.Metadata;
-#endif
 
 namespace Cubusky.Numerics.Json.Serialization
 {
     /// <summary>Converts a <see cref="Plane"/> to or from JSON using an array of four <see cref="float"/> values.</summary>
-    public class PlaneJsonConverter : JsonConverter<Plane, float[]>
+    public sealed class PlaneJsonConverter : SpanJsonConverter<Plane, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="PlaneJsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public PlaneJsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public PlaneJsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 4;
 
         /// <inheritdoc />
-        protected override float[] Convert(Plane value) => new float[] { value.Normal.X, value.Normal.Y, value.Normal.Z, value.D };
+        public override Plane FromSpan(Span<float> span) => new Plane(span[0], span[1], span[2], span[3]);
 
         /// <inheritdoc />
-        protected override Plane Revert(float[] value) => value.Length == 4 ? new Plane(new Vector3(value[0], value[1], value[2]), value[3]) : throw new JsonException();
+        public override void ToSpan(Plane value, Span<float> span)
+        {
+            span[0] = value.Normal.X;
+            span[1] = value.Normal.Y;
+            span[2] = value.Normal.Z;
+            span[3] = value.D;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 
     /// <summary>Converts a <see cref="Quaternion"/> to or from JSON using an array of four <see cref="float"/> values.</summary>
-    public class QuaternionJsonConverter : JsonConverter<Quaternion, float[]>
+    public sealed class QuaternionJsonConverter : SpanJsonConverter<Quaternion, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="QuaternionJsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public QuaternionJsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public QuaternionJsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 4;
 
         /// <inheritdoc />
-        protected override float[] Convert(Quaternion value) => new float[] { value.X, value.Y, value.Z, value.W };
+        public override Quaternion FromSpan(Span<float> span) => new Quaternion(span[0], span[1], span[2], span[3]);
 
         /// <inheritdoc />
-        protected override Quaternion Revert(float[] value) => value.Length == 4 ? new Quaternion(value[0], value[1], value[2], value[3]) : throw new JsonException();
+        public override void ToSpan(Quaternion value, Span<float> span)
+        {
+            span[0] = value.X;
+            span[1] = value.Y;
+            span[2] = value.Z;
+            span[3] = value.W;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 }
