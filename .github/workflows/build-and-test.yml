@@ -11,7 +11,12 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest   
+    runs-on: ubuntu-latest
+
+    env:
+      # Necessary for installing OpenSSL 1.1
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -20,20 +25,15 @@ jobs:
       with:
         dotnet-version: '3.1.x'
 
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9
-
     - name: Install OpenSSL 1.1
       run: |
         wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
         sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb`
+
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
         
     - run: dotnet restore
     - run: dotnet build --no-restore
