@@ -1,44 +1,71 @@
 using Cubusky.Text.Json.Serialization;
+using System;
 using System.Numerics;
 using System.Text.Json;
-
-#if !NET8_0_OR_GREATER
-using System.Text.Json.Serialization.Metadata;
-#endif
 
 namespace Cubusky.Numerics.Json.Serialization
 {
     /// <summary>Converts a <see cref="Matrix3x2"/> to or from JSON using an array of six <see cref="float"/> values.</summary>
-    public class Matrix3x2JsonConverter : JsonConverter<Matrix3x2, float[]>
+    public sealed class Matrix3x2JsonConverter : SpanJsonConverter<Matrix3x2, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="Matrix3x2JsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public Matrix3x2JsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public Matrix3x2JsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 6;
 
         /// <inheritdoc />
-        protected override float[] Convert(Matrix3x2 value) => new float[] { value.M11, value.M12, value.M21, value.M22, value.M31, value.M32 };
+        public override Matrix3x2 FromSpan(Span<float> span) => new Matrix3x2(span[0], span[1], span[2], span[3], span[4], span[5]);
 
         /// <inheritdoc />
-        protected override Matrix3x2 Revert(float[] value) => value.Length == 6 ? new Matrix3x2(value[0], value[1], value[2], value[3], value[4], value[5]) : throw new JsonException();
+        public override void ToSpan(Matrix3x2 value, Span<float> span)
+        {
+            span[0] = value.M11;
+            span[1] = value.M12;
+            span[2] = value.M21;
+            span[3] = value.M22;
+            span[4] = value.M31;
+            span[5] = value.M32;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 
     /// <summary>Converts a <see cref="Matrix4x4"/> to or from JSON using an array of sixteen <see cref="float"/> values.</summary>
-    public class Matrix4x4JsonConverter : JsonConverter<Matrix4x4, float[]>
+    public sealed class Matrix4x4JsonConverter : SpanJsonConverter<Matrix4x4, float>
     {
-        /// <summary>Initializes a new instance of the <see cref="Matrix4x4JsonConverter"/> class.</summary>
-#if NET8_0_OR_GREATER
-        public Matrix4x4JsonConverter() : base(new SingleArrayContext()) { }
-#else
-        public Matrix4x4JsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
+        /// <inheritdoc />
+        public override int SpanLength => 16;
 
         /// <inheritdoc />
-        protected override float[] Convert(Matrix4x4 value) => new float[] { value.M11, value.M12, value.M13, value.M14, value.M21, value.M22, value.M23, value.M24, value.M31, value.M32, value.M33, value.M34, value.M41, value.M42, value.M43, value.M44 };
+        public override Matrix4x4 FromSpan(Span<float> span) => new Matrix4x4(span[0], span[1], span[2], span[3], span[4], span[5], span[6], span[7], span[8], span[9], span[10], span[11], span[12], span[13], span[14], span[15]);
 
         /// <inheritdoc />
-        protected override Matrix4x4 Revert(float[] value) => value.Length == 16 ? new Matrix4x4(value[0], value[1], value[2], value[3], value[4], value[5], value[6], value[7], value[8], value[9], value[10], value[11], value[12], value[13], value[14], value[15]) : throw new JsonException();
+        public override void ToSpan(Matrix4x4 value, Span<float> span)
+        {
+            span[0] = value.M11;
+            span[1] = value.M12;
+            span[2] = value.M13;
+            span[3] = value.M14;
+            span[4] = value.M21;
+            span[5] = value.M22;
+            span[6] = value.M23;
+            span[7] = value.M24;
+            span[8] = value.M31;
+            span[9] = value.M32;
+            span[10] = value.M33;
+            span[11] = value.M34;
+            span[12] = value.M41;
+            span[13] = value.M42;
+            span[14] = value.M43;
+            span[15] = value.M44;
+        }
+
+        /// <inheritdoc />
+        protected override float ReadValue(ref Utf8JsonReader reader) => reader.GetSingle();
+
+        /// <inheritdoc />
+        protected override void WriteValue(Utf8JsonWriter writer, float value) => writer.WriteNumberValue(value);
     }
 }

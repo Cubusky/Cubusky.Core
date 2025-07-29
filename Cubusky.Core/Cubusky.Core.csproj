@@ -5,7 +5,10 @@
 	<RootNamespace>Cubusky</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-	
+
+	<!-- Globalization -->
+	<InvariantGlobalization>true</InvariantGlobalization>
+	  
 	<!-- Win 32 -->
 	<ApplicationIcon>favicon.ico</ApplicationIcon>
 	  
@@ -74,7 +77,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 

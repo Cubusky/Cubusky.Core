@@ -11,7 +11,7 @@ using Json = System.Text.Json.JsonSerializer;
 namespace Cubusky.IO.Serialization
 {
     /// <summary>Provides functionality to serialize from- and deserialize to objects or value types using the <see cref="System.Text.Json.JsonSerializer"/>.</summary>
-    public class JsonSerializer : IStreamSerializer, IAsyncStreamSerializer
+    public class JsonStreamSerializer : IStreamSerializer, IAsyncStreamSerializer
     {
         private static class DynamicCodeSuppress
         {
@@ -34,27 +34,27 @@ namespace Cubusky.IO.Serialization
         private readonly JsonSerializerOptions? options;
         private readonly JsonSerializerContext? context;
 
-        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="JsonStreamSerializer"/> class.</summary>
         /// <param name="jsonTypeInfo">Metadata about the type to convert.</param>
-        public JsonSerializer(JsonTypeInfo jsonTypeInfo)
+        public JsonStreamSerializer(JsonTypeInfo jsonTypeInfo)
         {
             this.jsonTypeInfo = jsonTypeInfo;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="JsonStreamSerializer"/> class.</summary>
         /// <param name="options">Options to control serialization behavior.</param>
 #if NET8_0_OR_GREATER
         [RequiresUnreferencedCode("Use the overload that takes a JsonTypeInfo or JsonSerializerContext, or make sure all of the required types are preserved.")]
         [RequiresDynamicCode("Use System.Text.Json source generation for native AOT applications.")]
 #endif
-        public JsonSerializer(JsonSerializerOptions? options = null)
+        public JsonStreamSerializer(JsonSerializerOptions? options = null)
         {
             this.options = options;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="JsonStreamSerializer"/> class.</summary>
         /// <param name="context">A metadata provider for serializable types.</param>
-        public JsonSerializer(JsonSerializerContext context)
+        public JsonStreamSerializer(JsonSerializerContext context)
         {
             this.context = context;
         }
@@ -134,5 +134,26 @@ namespace Cubusky.IO.Serialization
                 return Json.DeserializeAsync(stream, returnType, options, cancellationToken);
             }
         }
+    }
+
+    /// <summary>Provides functionality to serialize from- and deserialize to objects or value types using the <see cref="System.Text.Json.JsonSerializer"/>.</summary>
+    [Obsolete("Use JsonStreamSerializer from Cubusky.IO.Serialization instead. This class will be removed in a future version.")]
+    public class JsonSerializer : JsonStreamSerializer
+    {
+        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <inheritdoc />
+        public JsonSerializer(JsonTypeInfo jsonTypeInfo) : base(jsonTypeInfo) { }
+
+        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <inheritdoc />
+#if NET8_0_OR_GREATER
+            [RequiresUnreferencedCode("Use the overload that takes a JsonTypeInfo or JsonSerializerContext, or make sure all of the required types are preserved.")]
+            [RequiresDynamicCode("Use System.Text.Json source generation for native AOT applications.")]
+#endif
+        public JsonSerializer(JsonSerializerOptions? options = null) : base(options) { }
+
+        /// <summary>Initializes a new instance of the <see cref="JsonSerializer"/> class.</summary>
+        /// <inheritdoc />
+        public JsonSerializer(JsonSerializerContext context) : base(context) { }
     }
 }

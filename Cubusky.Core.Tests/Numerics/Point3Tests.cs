@@ -1,6 +1,5 @@
 using Cubusky.Numerics;
 using System;
-using System.Globalization;
 using Xunit;
 
 namespace Cubusky.Tests.Numerics
@@ -255,7 +254,6 @@ namespace Cubusky.Tests.Numerics
         {
             // Arrange
             var point = new Point3(1, 2, 3);
-            CultureInfo.CurrentCulture = new CultureInfo("en-US");
 
             // Act
             var result = point.ToString();

@@ -1,3 +1,4 @@
+using Cubusky.Collections.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,6 @@ namespace Cubusky.Heatmaps
         /// <summary>Returns an enumerator that iterates through the positions of the <see cref="IHeatmap{TPoint, TVector}"/>.</summary>
         /// <param name="heatmap">The <see cref="IHeatmap{TPoint, TVector}"/> interface instance.</param>
         /// <returns>An <see cref="IEnumerator{T}"/> for the positions of the <see cref="IHeatmap{TPoint, TVector}"/>.</returns>
-        public static IEnumerable<KeyValuePair<TVector, int>> GetStrengthByPositions<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap) => heatmap.Select(strengthByCell => KeyValuePair.Create(heatmap.GetPosition(strengthByCell.Key), strengthByCell.Value));
+        public static IEnumerable<ItemCount<TVector>> GetStrengthByPositions<TPoint, TVector>(this IHeatmap<TPoint, TVector> heatmap) => heatmap.Select(strengthByCell => ItemCount.Create(heatmap.GetPosition(strengthByCell.Item), strengthByCell.Count));
     }
 }

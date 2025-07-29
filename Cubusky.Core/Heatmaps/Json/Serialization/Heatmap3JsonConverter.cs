@@ -1,63 +1,67 @@
 using Cubusky.Numerics;
 using Cubusky.Numerics.Json.Serialization;
-using Cubusky.Text.Json.Serialization;
+using Cubusky.Text.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-
-#if !NET8_0_OR_GREATER
-using System.Text.Json.Serialization.Metadata;
-#endif
 
 namespace Cubusky.Heatmaps.Json.Serialization
 {
     /// <summary>Default converter for <see cref="Heatmap3"/>.</summary>
-    public partial class Heatmap3JsonConverter : JsonConverter<Heatmap3, Heatmap3JsonConverter.JsonObject>
+    /// <remarks>
+    /// Json example:
+    /// {
+    ///     "Matrix": [0.2971,0.4537,0.0191,0.8069,0.4482,0.1602,0.3329,0.4238,0.3899,0.9365,0.4164,0.2365,0.6978,0.9152,0.8771,0.086],
+    ///     "Bounds": [-3, -3, -3, 7, 7, 7],
+    ///     "Strengths": [1,-2,2,-2,3,-14,4,-2,5,-2,6,-14,7,-2,8,-2,9,-98,10,-2,11,-2,12,-14,13,-2,14,-2,15,-14,16,-2,17,-2,18,-98,19,-2,20,-2,21,-14,22,-2,23,-2,24,-14,25,-2,26,-2,27]
+    /// }
+    /// </remarks>
+    public class Heatmap3JsonConverter : JsonConverter<Heatmap3>
     {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public struct JsonObject
+        private const string MatrixPropertyName = "Matrix";
+        private const string BoundsPropertyName = "Bounds";
+        private const string StrengthsPropertyName = "Strengths";
+
+        private static readonly Matrix4x4JsonConverter matrix4x4JsonConverter = new Matrix4x4JsonConverter();
+        private static readonly BoxJsonConverter boxJsonConverter = new BoxJsonConverter();
+
+        /// <inheritdoc />
+        public override Heatmap3? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            [JsonConverter(typeof(Matrix4x4JsonConverter))]
-            public Matrix4x4 Matrix { get; set; }
+            // Read Start Object
+            reader.ThrowIfNotTokenType(JsonTokenType.StartObject);
 
-            [JsonConverter(typeof(BoxJsonConverter))]
-            public Box Bounds { get; set; }
+            reader.ReadOrThrow(MatrixPropertyName);
+            var matrix = matrix4x4JsonConverter.Read(ref reader, typeof(Matrix4x4), options);
 
-            public int[] Strengths { get; set; }
+            reader.ReadOrThrow(BoundsPropertyName);
+            var bounds = boxJsonConverter.Read(ref reader, typeof(Box), options);
 
-            public readonly void Deconstruct(out Matrix4x4 matrix, out Box bounds, out int[] strengths)
+            // Setup heatmap
+            Heatmap3 heatmap;
+            checked
             {
-                matrix = this.Matrix;
-                bounds = this.Bounds;
-                strengths = this.Strengths;
+                try
+                {
+                    heatmap = new Heatmap3(bounds.Size.X * bounds.Size.Y * bounds.Size.Z, matrix);
+                }
+                catch (OverflowException)
+                {
+                    heatmap = new Heatmap3(int.MaxValue, matrix);
+                }
             }
-        }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-#if NET8_0_OR_GREATER
-        [JsonSerializable(typeof(JsonObject), GenerationMode = JsonSourceGenerationMode.Metadata)]
-        internal partial class Heatmap3Context : JsonSerializerContext { }
-
-        /// <summary>Initializes a new instance of the <see cref="Heatmap3JsonConverter"/> class.</summary>
-        public Heatmap3JsonConverter() : base(new Heatmap3Context()) { }
-#else
-        /// <summary>Initializes a new instance of the <see cref="Heatmap2JsonConverter"/> class.</summary>
-        public Heatmap3JsonConverter() : base(new DefaultJsonTypeInfoResolver()) { }
-#endif
-
-        /// <inheritdoc/>
-        protected override Heatmap3 Revert(JsonObject value)
-        {
-            var (matrix, bounds, strengths) = value;
+            // Read "Strengths" Array
             var offset = bounds.Position;
             var max = offset + bounds.Size;
 
-            var heatmap = new Heatmap3(matrix);
-            for (var i = 0; i < strengths?.Length; i++)
+            reader.ReadOrThrow(StrengthsPropertyName);
+            reader.ThrowIfNotTokenType(JsonTokenType.StartArray);
+            while (reader.Read(JsonTokenType.Number))
             {
-                var strength = strengths[i];
+                var strength = reader.GetInt32();
 
                 if (strength < 0)
                 {
@@ -65,7 +69,7 @@ namespace Cubusky.Heatmaps.Json.Serialization
                     offset.Y += Math.DivRem(remainder, bounds.Width, out remainder);
                     offset.X += remainder;
 
-                    strength = strengths[++i];
+                    continue;
                 }
 
                 heatmap.Add(offset, strength);
@@ -80,45 +84,57 @@ namespace Cubusky.Heatmaps.Json.Serialization
                     }
                 }
             }
+            heatmap.TrimExcess();
+
+            reader.ThrowIfNotTokenType(JsonTokenType.EndArray);
+            reader.ReadOrThrow(JsonTokenType.EndObject);
 
             return heatmap;
         }
 
-        /// <inheritdoc/>
-        protected override JsonObject Convert(Heatmap3 value)
+        /// <inheritdoc />
+        public override void Write(Utf8JsonWriter writer, Heatmap3 value, JsonSerializerOptions options)
         {
             // Calculate bounds
-            var bounds = new Box(value.FirstOrDefault().Key, Point3.Zero);
+            var bounds = new Box(value.FirstOrDefault().Item, Point3.Zero);
             var orderedCells = value.OrderBy(strengthByCell =>
             {
-                var cell = strengthByCell.Key;
+                var cell = strengthByCell.Item;
                 bounds = Box.Encapsulate(bounds, cell);
                 return cell;
             }, new PointComparer()).ToArray(); // To Array is necessary to evaluate the query.
             bounds.Size += Point3.One;
 
-            // Order strengths
-            var strengths = new List<int>(orderedCells.Length * 2);
+            // Write Start Object
+            writer.WriteStartObject();
+            writer.WritePropertyName(MatrixPropertyName);
+            matrix4x4JsonConverter.Write(writer, value.CellToPositionMatrix, options);
+            writer.WritePropertyName(BoundsPropertyName);
+            boxJsonConverter.Write(writer, bounds, options);
+
+            // Write "Strengths" Array
             var offset = bounds.Position;
+
+            writer.WritePropertyName(StrengthsPropertyName);
+            writer.WriteStartArray();
             foreach (var (cell, strength) in orderedCells)
             {
-                var next = (offset.Z - cell.Z) * bounds.Height * bounds.Width + (offset.Y - cell.Y) * bounds.Width + (offset.X - cell.X) + 1;
+                var next = (offset.Z - cell.Z) * bounds.Height * bounds.Width
+                    + (offset.Y - cell.Y) * bounds.Width
+                    + (offset.X - cell.X)
+                    + 1;
                 if (next < 0)
                 {
-                    strengths.Add(next);
+                    writer.WriteNumberValue(next);
                 }
                 offset = cell;
 
-                strengths.Add(strength);
+                writer.WriteNumberValue(strength);
             }
 
-            // Return JSON object
-            return new JsonObject()
-            {
-                Matrix = value.CellToPositionMatrix,
-                Bounds = bounds,
-                Strengths = strengths.ToArray(),
-            };
+            // Write End Array and End Object
+            writer.WriteEndArray();
+            writer.WriteEndObject();
         }
     }
 }

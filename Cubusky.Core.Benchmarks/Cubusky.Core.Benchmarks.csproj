@@ -7,15 +7,19 @@
 	<RootNamespace>Cubusky.Benchmarks</RootNamespace>
     <Nullable>enable</Nullable>
 	<Optimize>true</Optimize>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
+	<!-- Globalization -->
+	<InvariantGlobalization>true</InvariantGlobalization>
+	  
 	<!-- Strong Naming -->
 	<SignAssembly>True</SignAssembly>
 	<AssemblyOriginatorKeyFile>..\opensource.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.1" />
   </ItemGroup>
 
   <ItemGroup>

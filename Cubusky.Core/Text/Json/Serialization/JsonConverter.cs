@@ -14,6 +14,7 @@ namespace Cubusky.Text.Json.Serialization
     /// When it is desirable to represent a type in JSON using a different data structure, implement this helper class. For example, to represent a <see cref="Vector3"/> as an array of three <see cref="float"/> values, implement the following class:
     /// <code><![CDATA[ Vector3JsonConverter : JsonConverter<Vector3, float[]> ]]></code>
     /// </remarks>
+    [Obsolete("Use JsonConverter<T> from System.Text.Json.Serialization instead. This class will be removed in a future version.")]
     public abstract class JsonConverter<TInput, TOutput> : JsonConverter<TInput>
     {
         private readonly IJsonTypeInfoResolver jsonTypeInfoResolver;
