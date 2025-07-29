@@ -280,8 +280,6 @@ namespace Cubusky.Tests.Numerics
         public void ToString_DefaultFormat_ShouldReturnCorrectString()
         {
             var bounds = new Bounds2(1, 2, 3, 4);
-            CultureInfo.CurrentCulture = new CultureInfo("en-US");
-
             var expected = "{1, 2, 3, 4}";
             Assert.Equal(expected, bounds.ToString());
         }

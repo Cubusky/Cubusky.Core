@@ -9,6 +9,9 @@
     <IsTestProject>true</IsTestProject>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
+	<!-- Globalization -->
+	<InvariantGlobalization>true</InvariantGlobalization>
+	  
 	<!-- Strong Naming -->
 	<SignAssembly>True</SignAssembly>
 	<AssemblyOriginatorKeyFile>..\opensource.snk</AssemblyOriginatorKeyFile>
