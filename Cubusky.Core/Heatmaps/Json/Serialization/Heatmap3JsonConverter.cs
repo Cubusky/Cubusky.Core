@@ -96,10 +96,10 @@ namespace Cubusky.Heatmaps.Json.Serialization
         public override void Write(Utf8JsonWriter writer, Heatmap3 value, JsonSerializerOptions options)
         {
             // Calculate bounds
-            var bounds = new Box(value.FirstOrDefault().Key, Point3.Zero);
+            var bounds = new Box(value.FirstOrDefault().Item, Point3.Zero);
             var orderedCells = value.OrderBy(strengthByCell =>
             {
-                var cell = strengthByCell.Key;
+                var cell = strengthByCell.Item;
                 bounds = Box.Encapsulate(bounds, cell);
                 return cell;
             }, new PointComparer()).ToArray(); // To Array is necessary to evaluate the query.

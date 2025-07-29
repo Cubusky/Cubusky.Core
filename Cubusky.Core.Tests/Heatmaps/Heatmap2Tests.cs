@@ -92,7 +92,7 @@ namespace Cubusky.Tests.Heatmaps
         [Fact]
         public void Add0_Throws()
         {
-            Assert.Throws<ArgumentOutOfRangeException>("strength", () => heatmapPopulated.Add(Point2.Zero, 0));
+            Assert.Throws<ArgumentOutOfRangeException>("count", () => heatmapPopulated.Add(Point2.Zero, 0));
         }
 
         [Theory]
@@ -108,7 +108,7 @@ namespace Cubusky.Tests.Heatmaps
         [Fact]
         public void Remove0_Throws()
         {
-            Assert.Throws<ArgumentOutOfRangeException>("strength", () => heatmapPopulated.Remove(Point2.Zero, 0));
+            Assert.Throws<ArgumentOutOfRangeException>("count", () => heatmapPopulated.Remove(Point2.Zero, 0));
         }
         #endregion
     }
