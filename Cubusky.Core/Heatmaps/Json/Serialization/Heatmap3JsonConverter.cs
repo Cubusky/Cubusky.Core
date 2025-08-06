@@ -65,9 +65,9 @@ namespace Cubusky.Heatmaps.Json.Serialization
 
                 if (strength < 0)
                 {
-                    offset.Z += Math.DivRem(-strength, bounds.Width * bounds.Height, out var remainder);
-                    offset.Y += Math.DivRem(remainder, bounds.Width, out remainder);
-                    offset.X += remainder;
+                    offset.Z += Math.DivRem(-strength + (offset.Y - bounds.Y) * bounds.Width + (offset.X - bounds.X), bounds.Width * bounds.Height, out var remainder);
+                    offset.Y = Math.DivRem(remainder, bounds.Width, out remainder) + bounds.Y;
+                    offset.X = remainder + bounds.X;
 
                     continue;
                 }
@@ -121,15 +121,15 @@ namespace Cubusky.Heatmaps.Json.Serialization
             {
                 var next = (offset.Z - cell.Z) * bounds.Height * bounds.Width
                     + (offset.Y - cell.Y) * bounds.Width
-                    + (offset.X - cell.X)
-                    + 1;
+                    + (offset.X - cell.X);
                 if (next < 0)
                 {
                     writer.WriteNumberValue(next);
                 }
-                offset = cell;
-
                 writer.WriteNumberValue(strength);
+
+                offset = cell;
+                offset.X++;
             }
 
             // Write End Array and End Object
