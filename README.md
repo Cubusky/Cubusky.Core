@@ -1,3 +1,12 @@
+> [!WARNING]
+> This package is deprecated. It is from a bygone era before we became a member at Chickensoft, making broader more useful tools that snugly stack together.
+>
+> For Save & Load functionality, we recommend the improved [SaveFileBuilder](https://github.com/chickensoft-games/SaveFileBuilder), originally inspired by this implementation.
+>
+> For an expert implementation of the observer pattern we highly recommend [Sync](https://github.com/chickensoft-games/Sync), a reactivity library that guarantees 0 [reentrancy](https://en.wikipedia.org/wiki/Reentrancy_(computing)) issues.
+>
+> Optimized Heatmaps & Json is a project for a future date. If you must, we recommend copying the converters from this library.
+
 ![Icon](https://raw.githubusercontent.com/Cubusky/Cubusky.Core/master/Icon.png)
 
 # Cubusky
